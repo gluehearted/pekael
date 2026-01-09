@@ -28,4 +28,20 @@ Route::get('/gemini-test', function () {
 
     return $result->text();
 });
+
+use App\Http\Controllers\KegiatanController;
+
+Route::get('/upload', [KegiatanController::class, 'create'])->name('kegiatan.create');
+Route::post('/upload', [KegiatanController::class, 'store'])->name('kegiatan.store');
+Route::get('/check/{id}', [KegiatanController::class, 'checkAi'])->name('kegiatan.check'); // Trigger AI
+Route::get('/hasil/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
+
+use Illuminate\Support\Facades\Http;
+
+Route::get('/cek-model', function () {
+    $apiKey = env('GEMINI_API_KEY');
+    $response = Http::get("https://generativelanguage.googleapis.com/v1beta/models?key={$apiKey}");
+
+    return $response->json();
+});
 require __DIR__ . '/auth.php';

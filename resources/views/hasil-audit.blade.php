@@ -6,31 +6,25 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="container card shadow p-4" style="max-width: 600px;">
-            <h3 class="text-center mb-4">📂 Upload Dokumen Kegiatan</h3>
+        <div class="container">
+            <h2>Hasil Audit: {{ $kegiatan->judul }}</h2>
 
-            <form action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            @if ($kegiatan->status_qc == 'APPROVED')
+                <span class="badge bg-success fs-5">✅ APPROVED (Cocok)</span>
+            @else
+                <span class="badge bg-danger fs-5">❌ REJECTED (Tidak Cocok)</span>
+            @endif
 
-                <div class="mb-3">
-                    <label>Judul Kegiatan</label>
-                    <input type="text" name="judul" class="form-control" placeholder="Contoh: Seminar IT" required>
+            <hr>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-dark text-white">🤖 Analisa AI Gemini</div>
+                <div class="card-body text-white">
+                    {!! \Illuminate\Support\Str::markdown($kegiatan->catatan_terakhir) !!}
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label class="fw-bold">📄 File Proposal (PDF)</label>
-                    <input type="file" name="file_proposal" class="form-control" accept="application/pdf" required>
-                    <small class="text-muted">Upload rencana anggaran awal.</small>
-                </div>
-
-                <div class="mb-3">
-                    <label class="fw-bold">📊 File Laporan Akhir (PDF)</label>
-                    <input type="file" name="file_laporan" class="form-control" accept="application/pdf" required>
-                    <small class="text-muted">Upload realisasi kegiatan.</small>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100">🚀 Upload & Cek Otomatis</button>
-            </form>
+            <a href="{{ route('kegiatan.create') }}" class="btn btn-secondary mt-3">⬅ Kembali Upload Baru</a>
         </div>
     </div>
 
