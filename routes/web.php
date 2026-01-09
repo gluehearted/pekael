@@ -20,4 +20,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+use Gemini\Laravel\Facades\Gemini;
+
+Route::get('/gemini-test', function () {
+    $result = Gemini::generativeModel('models/gemini-2.5-flash')
+        ->generateContent('apakah kmu tau tentang api gemini itu hrs bayar brpa jika data privasinya aman?');
+
+    return $result->text();
+});
+require __DIR__ . '/auth.php';
